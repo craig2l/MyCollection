@@ -1,0 +1,7 @@
+  "Data": {
+    "SqlServerConnectionString": "server=delldesk2010\\sql2008;database=MagicCollection;integrated security=false;UID=sa;Password=Welcome10!;MultipleActiveResultSets=true;App=MagicCollection"
+	
+	laptop server:
+	DESKTOP-984P5AL\sql2014
+	DB: MagicCollection
+	Trusted Connection
