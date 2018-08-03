@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MagicCollection.API.Models
 {
@@ -16,18 +15,17 @@ namespace MagicCollection.API.Models
         {
         }
 
-       
         public virtual DbSet<Book> Books { get; set; }
-        public virtual DbSet<CollectionType> CollectionType { get; set; }
-        public virtual DbSet<HistoricalRealizedPrice> HistoricalRealizedPrice { get; set; }
-        //public virtual DbSet<MigrationHistory> MigrationHistory { get; set; }
+        public virtual DbSet<CollectionType> CollectionTypes { get; set; }
+        public virtual DbSet<CollectionUser> CollectionUsers { get; set; }
+        public virtual DbSet<HistoricalRealizedPrice> HistoricalRealizedPrices { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-984P5AL\\sql2014;Database=MagicCollection;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Data Source=DESKTOP-984P5AL\\sql2014;Initial Catalog=MagicCollection;Integrated Security=True");
             }
         }
 
@@ -36,6 +34,8 @@ namespace MagicCollection.API.Models
             modelBuilder.Entity<Book>(entity =>
             {
                 entity.HasKey(e => new { e.Id, e.CollectionType });
+
+                entity.ToTable("Book");
 
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
@@ -178,7 +178,27 @@ namespace MagicCollection.API.Models
 
             modelBuilder.Entity<CollectionType>(entity =>
             {
+                entity.ToTable("CollectionType");
+
                 entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<CollectionUser>(entity =>
+            {
+                entity.ToTable("CollectionUser");
+
+                entity.Property(e => e.PasswordHash)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.PasswordSalt)
+                    .IsRequired()
+                    .HasMaxLength(1000);
+
+                entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(100)
                     .IsUnicode(false);
@@ -186,6 +206,8 @@ namespace MagicCollection.API.Models
 
             modelBuilder.Entity<HistoricalRealizedPrice>(entity =>
             {
+                entity.ToTable("HistoricalRealizedPrice");
+
                 entity.HasIndex(e => new { e.CollectionType, e.SourceId })
                     .HasName("uc_CollectionTypeSourceId")
                     .IsUnique();
@@ -201,29 +223,15 @@ namespace MagicCollection.API.Models
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Book)
-                    .WithMany(p => p.HistoricalRealizedPrice)
+                    .WithMany(p => p.HistoricalRealizedPrices)
                     .HasForeignKey(d => new { d.SourceId, d.CollectionType })
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HistoricalRealizedPrice_Book");
+                    .HasConstraintName("FK_HistoricalRealizedPrice_Books");
             });
 
-            modelBuilder.Entity<MigrationHistory>(entity =>
-            {
-                entity.HasKey(e => new { e.MigrationId, e.ContextKey });
-
-                entity.ToTable("__MigrationHistory");
-
-                entity.Property(e => e.MigrationId).HasMaxLength(150);
-
-                entity.Property(e => e.ContextKey).HasMaxLength(300);
-
-                entity.Property(e => e.Model).IsRequired();
-
-                entity.Property(e => e.ProductVersion)
-                    .IsRequired()
-                    .HasMaxLength(32);
-            });
-            
+            OnModelCreatingPartial(modelBuilder);
         }
+
+        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

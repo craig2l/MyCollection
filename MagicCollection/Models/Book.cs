@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MagicCollection.API.Models
 {
-    [Table("Book")]
     public partial class Book
     {
         public Book()
         {
-            HistoricalRealizedPrice = new HashSet<HistoricalRealizedPrice>();
+            HistoricalRealizedPrices = new HashSet<HistoricalRealizedPrice>();
         }
 
         public int Id { get; set; }
@@ -62,6 +60,6 @@ namespace MagicCollection.API.Models
         public DateTime? DateAdded { get; set; }
         public DateTime? DateUpdated { get; set; }
 
-        public ICollection<HistoricalRealizedPrice> HistoricalRealizedPrice { get; set; }
+        public ICollection<HistoricalRealizedPrice> HistoricalRealizedPrices { get; set; }
     }
 }

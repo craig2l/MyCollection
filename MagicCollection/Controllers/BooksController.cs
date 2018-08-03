@@ -5,13 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MagicCollection.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MagicCollection.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
-    public class BooksController : Controller
+    [ApiController]
+    public class BooksController : ControllerBase
     {
         private MagicCollectionContext _db { get; }
 
@@ -20,14 +23,16 @@ namespace MagicCollection.API.Controllers
         {
             _db = context;
         }
-        [HttpGet("{id}")]
+
+        [AllowAnonymous]
+        [HttpGet("GetBook/{id}")]
         public async Task<IActionResult> GetBook(int id)
         {
             var singleBook = await _db.Books.FirstOrDefaultAsync(x => x.Id == id);
             return Ok(singleBook);
         }
         
-        // GET: api/values
+        // GET: api/values        
         [HttpGet]
         //public IEnumerable<Book> Get()
         public async Task<IActionResult> Get()
@@ -36,6 +41,7 @@ namespace MagicCollection.API.Controllers
             return Ok(list);
         }
 
+        [HttpGet("First/")]
         public Book First()
         {
             return _db.Books.FirstOrDefault();
