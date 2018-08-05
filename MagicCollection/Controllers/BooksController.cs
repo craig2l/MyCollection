@@ -24,7 +24,7 @@ namespace MagicCollection.API.Controllers
             _db = context;
         }
 
-        [AllowAnonymous]
+        
         [HttpGet("GetBook/{id}")]
         public async Task<IActionResult> GetBook(int id)
         {

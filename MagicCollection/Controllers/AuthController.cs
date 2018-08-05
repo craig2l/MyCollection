@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace MagicCollection.API.Controllers
 {
-    
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -27,6 +27,7 @@ namespace MagicCollection.API.Controllers
             _config = config;
         }
 
+        [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
@@ -48,6 +49,7 @@ namespace MagicCollection.API.Controllers
             return StatusCode(201);  // TODO: will return CreatedAtRoute which also passes back a 201
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto user)
         {
