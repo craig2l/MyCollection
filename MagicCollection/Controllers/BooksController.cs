@@ -32,7 +32,8 @@ namespace MagicCollection.API.Controllers
             return Ok(singleBook);
         }
         
-        // GET: api/values        
+        // GET: api/values    
+        [AllowAnonymous]
         [HttpGet]
         //public IEnumerable<Book> Get()
         public async Task<IActionResult> Get()

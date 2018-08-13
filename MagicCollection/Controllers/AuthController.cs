@@ -52,7 +52,7 @@ namespace MagicCollection.API.Controllers
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto user)
-        {
+        {            
             var userFromRepo = await _repo.Login(user.Username.ToLower(), user.Password);
 
             if (userFromRepo == null)
