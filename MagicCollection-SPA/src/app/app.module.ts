@@ -1,4 +1,5 @@
 
+
 import { HttpClient } from 'selenium-webdriver/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -12,6 +13,9 @@ import { NavComponent } from './nav/nav.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './Services/error.interceptor';
+import { AlertifyService } from './Services/alertify.service';
+import { BsDropdownModule } from 'ngx-bootstrap';
+
 
 
 @NgModule({
@@ -25,11 +29,13 @@ import { ErrorInterceptorProvider } from './Services/error.interceptor';
    imports: [
       BrowserModule,
       HttpClientModule,
-      FormsModule
+      FormsModule,
+      BsDropdownModule.forRoot()
    ],
    providers: [
       AuthService,
-      ErrorInterceptorProvider
+      ErrorInterceptorProvider,
+      AlertifyService
    ],
    bootstrap: [
       AppComponent
