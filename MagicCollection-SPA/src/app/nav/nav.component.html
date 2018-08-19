@@ -1,16 +1,19 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-primary">
     <div class="container">
-            <a class="navbar-brand" href="#">Dom's Magic Collection</a>
+            <a class="navbar-brand" [routerLink]="['/home']">Dom's Magic Collection</a>
 
             <ul *ngIf="loggedIn()" class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Posters</a>
+            <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/assetlist']">Asset List</a>
+            </li>
+              <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/books']" >Books</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Books</a>
+              <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/posters']" >Posters</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Ephemera</a>
+              <li class="nav-item" routerLinkActive="active">
+                <a class="nav-link" [routerLink]="['/ephemera']" >Ephemera</a>
               </li>
               
             </ul>

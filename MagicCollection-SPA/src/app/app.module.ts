@@ -1,3 +1,4 @@
+import { AuthGuard } from './guards/auth.guard';
 
 
 import { HttpClient } from 'selenium-webdriver/http';
@@ -15,6 +16,11 @@ import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './Services/error.interceptor';
 import { AlertifyService } from './Services/alertify.service';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { EphemeraComponent } from './ephemera/ephemera.component';
+import { PostersComponent } from './posters/posters.component';
+import { AssetListComponent } from './asset-list/asset-list.component';
+import { RouterModule } from '../../node_modules/@angular/router';
+import { appRoutes } from './routes';
 
 
 
@@ -24,21 +30,29 @@ import { BsDropdownModule } from 'ngx-bootstrap';
       BooksComponent,
       NavComponent,
       HomeComponent,
-      RegisterComponent
+      BooksComponent,
+      RegisterComponent,
+      EphemeraComponent,
+      PostersComponent,
+      AssetListComponent
    ],
    imports: [
       BrowserModule,
       HttpClientModule,
       FormsModule,
-      BsDropdownModule.forRoot()
-   ],
+      BsDropdownModule.forRoot(),
+      RouterModule.forRoot(appRoutes)
+   ]
+,
    providers: [
       AuthService,
       ErrorInterceptorProvider,
-      AlertifyService
+      AlertifyService,
+      AuthGuard
    ],
    bootstrap: [
       AppComponent
    ]
 })
+
 export class AppModule { }
