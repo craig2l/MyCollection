@@ -16,7 +16,7 @@ export class BooksComponent implements OnInit {
     }
 
     getBooks() {
-        this.http.get('http://localhost:28906/api/books/').subscribe(
+        this.http.get('http://localhost:28906/api/books/getbooks').subscribe(
             response => this.books = response,
             error => console.log(error)
         );

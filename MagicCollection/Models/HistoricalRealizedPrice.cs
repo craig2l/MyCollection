@@ -6,7 +6,7 @@ namespace MagicCollection.API.Models
     public partial class HistoricalRealizedPrice
     {
         public int Id { get; set; }
-        public short CollectionType { get; set; }
+        public string CollectionType { get; set; }
         public int SourceId { get; set; }
         public decimal Price { get; set; }
         public DateTime? PriceDate { get; set; }

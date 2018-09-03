@@ -16,6 +16,7 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using MagicCollection.API.Helpers;
+using AutoMapper;
 
 namespace MagicCollection.API
 {
@@ -32,9 +33,15 @@ namespace MagicCollection.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MagicCollectionContext>(x => x.UseSqlServer(Configuration.GetConnectionString("MagicCollectionConnectionString")));
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(opt => {
+                    opt.SerializerSettings.ReferenceLoopHandling 
+                    = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
             services.AddCors();
+            services.AddAutoMapper();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IMagicCollectionRepository, MagicCollectionRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {

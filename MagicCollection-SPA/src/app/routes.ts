@@ -18,7 +18,6 @@ export const appRoutes: Routes = [
             { path: 'posters', component: PostersComponent},
             { path: 'ephemera', component: EphemeraComponent},
         ]
-    }
-
-    { path: '**', redirectTo: '', pathMatch: 'full'},
+    },
+    { path: '**', redirectTo: '', pathMatch: 'full'}
 ];

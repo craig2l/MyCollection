@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using MagicCollection.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using MagicCollection.API.Repository;
+using AutoMapper;
+using MagicCollection.API.Dto;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,37 +20,41 @@ namespace MagicCollection.API.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private MagicCollectionContext _db { get; }
+        private IMapper _mapper;
+        //private AutoMapper _autoMapper;
+        //private MagicCollectionContext _db { get; }
+        public IMagicCollectionRepository _repo { get; }
 
         // using dependency injection here
-        public BooksController(MagicCollectionContext context)
-        {
-            _db = context;
+        public BooksController(IMagicCollectionRepository repo, IMapper mapper)
+        {           
+            _repo = repo;
+            _mapper = mapper;
         }
 
-        
-        [HttpGet("GetBook/{id}")]
+        [AllowAnonymous]
+        [HttpGet("getbook/{id}")]
         public async Task<IActionResult> GetBook(int id)
         {
-            var singleBook = await _db.Books.FirstOrDefaultAsync(x => x.Id == id);
-            return Ok(singleBook);
+            var singleBook = await _repo.GetBook(id);
+
+            var bookLite = _mapper.Map<BookLite>(singleBook);
+            return Ok(bookLite);
         }
-        
-        // GET: api/values    
+               
         [AllowAnonymous]
-        [HttpGet]
-        //public IEnumerable<Book> Get()
-        public async Task<IActionResult> Get()
+        [HttpGet("getbooks/")]        
+        public async Task<IActionResult> GetBooks()
         {
-            var list = await _db.Books.ToListAsync(); //as IEnumerable<Books>;
-            return Ok(list);
+            var books = await _repo.GetBooks(); //as IEnumerable<Books>;
+            return Ok(books);
         }
 
-        [HttpGet("First/")]
-        public Book First()
-        {
-            return _db.Books.FirstOrDefault();
-        }
+        //[HttpGet("First/")]
+        //public Book First()
+        //{
+        //    return _repo.Books.FirstOrDefault();
+        //}
 
         // POST api/values
         [HttpPost]
